@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div align="center">
 
 <img src="public/logo.png" alt="ABHIJEET" width="120" />
@@ -172,3 +173,7 @@ Proprietary. © ABHIJEET / APIPL. All rights reserved.
 <div align="center">
 Built for the shop floor. 🏭
 </div>
+=======
+# Smart-Monitoring-System-Master-Copy-
+Master Copy of Smart Monitoring System 
+>>>>>>> 29b3ea9b5618a35577de55df90c172954124b2da
