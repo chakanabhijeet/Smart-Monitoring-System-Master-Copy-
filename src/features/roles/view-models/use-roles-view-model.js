@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -59,16 +60,16 @@ export function useRolesViewModel() {
 
   /* ------------------------------ forms ------------------------------ */
 
+  // Errors are checked when the form is submitted, then live while fixing them.
+  // (The fields are <Controller>s in the views, so reset() always clears them.)
   const addForm = useForm({
     resolver: zodResolver(roleSchema),
     defaultValues: { roleName: "" },
-    mode: "onTouched",
   });
 
   const idForm = useForm({
     resolver: zodResolver(deleteByIdSchema),
     defaultValues: { roleId: "" },
-    mode: "onTouched",
   });
 
   const [createError, setCreateError] = useState("");
@@ -95,6 +96,9 @@ export function useRolesViewModel() {
       if (role.id !== null) addRole(role);
 
       addForm.reset({ roleName: "" });
+
+      // Ready for the next role: put the cursor back in the field
+      setTimeout(() => addForm.setFocus("roleName"), 0);
 
       setNotice({
         type: "success",

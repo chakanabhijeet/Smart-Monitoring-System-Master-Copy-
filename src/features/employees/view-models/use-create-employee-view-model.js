@@ -52,6 +52,10 @@ export function useCreateEmployeeViewModel() {
   const [serverError, setServerError] = useState("");
   const [createdEmployee, setCreatedEmployee] = useState(null);
 
+  // Changes after every successful save so the form's inputs are rebuilt
+  // fresh (this keeps the 2nd, 3rd... person working after reset())
+  const [formKey, setFormKey] = useState(0);
+
   const form = useForm({
     resolver: zodResolver(employeeSchema),
     defaultValues: EMPTY_FORM,
@@ -80,6 +84,7 @@ export function useCreateEmployeeViewModel() {
       // once in the success box. It is never saved anywhere.
       setCreatedEmployee({ ...employee, tempPassword: values.password });
       form.reset(EMPTY_FORM);
+      setFormKey((value) => value + 1);
     },
 
     onError: (error) => {
@@ -109,6 +114,7 @@ export function useCreateEmployeeViewModel() {
 
   return {
     form,
+    formKey,
     onSubmit,
 
     departments: departmentsQuery.data ?? [],

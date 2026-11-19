@@ -1,3 +1,4 @@
+
 // One role, in the shape the screens use.
 // POST /user-role/createrolesuper answers:
 // { id, tenant_id, user_role, created_by, updated_by, created_at, updated_at }
@@ -29,19 +30,35 @@ export function buildDeleteRolePayload({ id, tenantId }) {
 
 // The delete API answers with text such as
 // "user deleted successfully" or "user not found".
-// Result: { outcome: "deleted" | "not_found", message }
+// Result: { outcome: "deleted" | "not_found" | "failed", message }
+// "failed" means the server answered with something that does NOT say the
+// role was deleted, so the role must stay in the list.
 export function normalizeDeleteResponse(data) {
   const text =
     typeof data === "string"
       ? data
       : data?.message || data?.msg || data?.detail || "";
 
-  const notFound = /not\s*found/i.test(text);
+  if (/not\s*found/i.test(text)) {
+    return { outcome: "not_found", message: text };
+  }
 
-  return {
-    outcome: notFound ? "not_found" : "deleted",
-    message: text || "Role deleted successfully.",
-  };
+  // An empty answer with a success status counts as deleted
+  if (!text.trim()) {
+    return { outcome: "deleted", message: "Role deleted successfully." };
+  }
+
+  const saysDeleted = /delet|remov|success/i.test(text);
+  const saysFailed =
+    /\b(not|cannot|can't|unable|fail|failed|error|denied|forbidden)\b/i.test(
+      text
+    );
+
+  if (saysDeleted && !saysFailed) {
+    return { outcome: "deleted", message: text };
+  }
+
+  return { outcome: "failed", message: text };
 }
 
 // Timestamps from this API include +05:30, so they are shown as they are

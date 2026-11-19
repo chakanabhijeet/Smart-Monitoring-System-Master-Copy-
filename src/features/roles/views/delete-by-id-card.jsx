@@ -1,15 +1,9 @@
 "use client";
 
+import { Controller } from "react-hook-form";
 import { Hash, Trash2 } from "lucide-react";
 
 export default function DeleteByIdCard({ tenant, form, onSubmit }) {
-  const {
-    register,
-    formState: { errors },
-  } = form;
-
-  const invalid = Boolean(errors.roleId);
-
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
       <div className="flex items-center gap-3">
@@ -34,47 +28,65 @@ export default function DeleteByIdCard({ tenant, form, onSubmit }) {
           Role ID
         </label>
 
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <div className="relative flex-1">
-            <Hash className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400" />
-            <input
-              id="roleId"
-              inputMode="numeric"
-              placeholder="e.g. 9"
-              autoComplete="off"
-              aria-invalid={invalid}
-              aria-describedby={invalid ? "roleId-error" : undefined}
-              className={`h-12 w-full rounded-xl border bg-slate-50 pl-11 pr-4 font-mono text-[15px] text-slate-900 outline-none transition placeholder:font-sans placeholder:text-slate-400 focus:bg-white focus:ring-4 ${
-                invalid
-                  ? "border-rose-300 focus:border-rose-400 focus:ring-rose-100"
-                  : "border-slate-200 focus:border-[#3b4fe0] focus:ring-[#3b4fe0]/15"
-              }`}
-              {...register("roleId")}
-            />
-          </div>
+        <Controller
+          control={form.control}
+          name="roleId"
+          render={({ field, fieldState }) => (
+            <>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <div className="relative flex-1">
+                  <Hash className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400" />
+                  <input
+                    id="roleId"
+                    name={field.name}
+                    ref={field.ref}
+                    value={field.value ?? ""}
+                    // keeps only digits, so the ID is always a number
+                    onChange={(event) =>
+                      field.onChange(event.target.value.replace(/\D/g, ""))
+                    }
+                    onBlur={field.onBlur}
+                    inputMode="numeric"
+                    placeholder="e.g. 9"
+                    autoComplete="off"
+                    aria-invalid={Boolean(fieldState.error)}
+                    aria-describedby={
+                      fieldState.error ? "roleId-error" : undefined
+                    }
+                    className={`h-12 w-full rounded-xl border bg-slate-50 pl-11 pr-4 font-mono text-[15px] text-slate-900 outline-none transition placeholder:font-sans placeholder:text-slate-400 focus:bg-white focus:ring-4 ${
+                      fieldState.error
+                        ? "border-rose-300 focus:border-rose-400 focus:ring-rose-100"
+                        : "border-slate-200 focus:border-[#3b4fe0] focus:ring-[#3b4fe0]/15"
+                    }`}
+                  />
+                </div>
 
-          <button
-            type="submit"
-            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-5 text-sm font-bold text-rose-700 transition hover:bg-rose-100"
-          >
-            <Trash2 className="h-4 w-4" />
-            Delete
-          </button>
-        </div>
+                <button
+                  type="submit"
+                  className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-5 text-sm font-bold text-rose-700 transition hover:bg-rose-100"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
+                </button>
+              </div>
 
-        {errors.roleId && (
-          <p
-            id="roleId-error"
-            className="mt-1.5 text-xs font-medium text-rose-600"
-            role="alert"
-          >
-            {errors.roleId.message}
-          </p>
-        )}
+              {fieldState.error && (
+                <p
+                  id="roleId-error"
+                  className="mt-1.5 text-xs font-medium text-rose-600"
+                  role="alert"
+                >
+                  {fieldState.error.message}
+                </p>
+              )}
+            </>
+          )}
+        />
 
         <p className="mt-3 text-xs text-slate-400">
-          The role is deleted from <span className="font-semibold">{tenant.name}</span>.
-          You will be asked to confirm first.
+          The role is deleted from{" "}
+          <span className="font-semibold">{tenant.name}</span>. You will be
+          asked to confirm first.
         </p>
       </form>
     </section>

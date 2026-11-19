@@ -1,5 +1,6 @@
 "use client";
 
+import { Controller } from "react-hook-form";
 import { AlertCircle, ArrowRight, Plus, RefreshCw, UserCog } from "lucide-react";
 
 export default function AddRoleCard({
@@ -9,13 +10,6 @@ export default function AddRoleCard({
   isSaving,
   error,
 }) {
-  const {
-    register,
-    formState: { errors },
-  } = form;
-
-  const invalid = Boolean(errors.roleName);
-
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
       <div className="flex items-center gap-3">
@@ -48,32 +42,50 @@ export default function AddRoleCard({
           Role name
         </label>
 
-        <div className="relative">
-          <UserCog className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400" />
-          <input
-            id="roleName"
-            placeholder="e.g. plant admin"
-            autoComplete="off"
-            aria-invalid={invalid}
-            aria-describedby={invalid ? "roleName-error" : undefined}
-            className={`h-12 w-full rounded-xl border bg-slate-50 pl-11 pr-4 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 ${
-              invalid
-                ? "border-rose-300 focus:border-rose-400 focus:ring-rose-100"
-                : "border-slate-200 focus:border-[#3b4fe0] focus:ring-[#3b4fe0]/15"
-            }`}
-            {...register("roleName")}
-          />
-        </div>
+        {/*
+          A <Controller> keeps the field in sync with the form even after
+          reset(), so it works for the 2nd, 3rd... role too.
+        */}
+        <Controller
+          control={form.control}
+          name="roleName"
+          render={({ field, fieldState }) => (
+            <>
+              <div className="relative">
+                <UserCog className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400" />
+                <input
+                  id="roleName"
+                  name={field.name}
+                  ref={field.ref}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  placeholder="e.g. plant admin"
+                  autoComplete="off"
+                  aria-invalid={Boolean(fieldState.error)}
+                  aria-describedby={
+                    fieldState.error ? "roleName-error" : undefined
+                  }
+                  className={`h-12 w-full rounded-xl border bg-slate-50 pl-11 pr-4 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 ${
+                    fieldState.error
+                      ? "border-rose-300 focus:border-rose-400 focus:ring-rose-100"
+                      : "border-slate-200 focus:border-[#3b4fe0] focus:ring-[#3b4fe0]/15"
+                  }`}
+                />
+              </div>
 
-        {errors.roleName && (
-          <p
-            id="roleName-error"
-            className="mt-1.5 text-xs font-medium text-rose-600"
-            role="alert"
-          >
-            {errors.roleName.message}
-          </p>
-        )}
+              {fieldState.error && (
+                <p
+                  id="roleName-error"
+                  className="mt-1.5 text-xs font-medium text-rose-600"
+                  role="alert"
+                >
+                  {fieldState.error.message}
+                </p>
+              )}
+            </>
+          )}
+        />
 
         <button
           type="submit"
