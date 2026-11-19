@@ -39,11 +39,15 @@ export const API_ENDPOINTS = {
 
     // Injection moulding shot log (last shots, min / max / avg cycle time).
     // Also a different server, so the full address is used.
-    IMM_LOG: "http://192.168.7.107:8000/proddata/immlog",//last shots api 
+    IMM_LOG: "http://192.168.7.144:8000/proddata/immlog",//last shots api 
   },
   TENANTS: {
-  CREATE: "http://192.168.7.169:8000/tenant/createtenant",
-  LIST: "http://192.168.7.169:8000/tenant/list",
-  VERIFY: "http://192.168.7.169:8000/tenant/verifytenant",
+  CREATE: "http://192.168.7.144:8000/tenant/createtenant",
+  LIST: "http://192.168.7.144:8000/tenant/list",
+  VERIFY: "http://192.168.7.144:8000/tenant/verifytenant",
+},
+USER_ROLES: {
+  CREATE: "http://192.168.7.144:8000/user-role/createrolesuper",
+  DELETE: "http://192.168.7.144:8000/user-role/delete",
 },
 };

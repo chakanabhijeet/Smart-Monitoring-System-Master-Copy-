@@ -26,8 +26,9 @@ import {
   Tv,
   Users,
   UserPlus,
+  UserCog,
   X,
-  Building2
+  Building2,
 } from "lucide-react";
 
 /*
@@ -41,82 +42,88 @@ import {
  *   { label: "Painting", icon: Paintbrush, children: [ ...Overview, ...TV ] }
  */
 const navigation = [
+  // {
+  //   label: "Dashboard",
+  //   href: "/dashboard",
+  //   icon: LayoutDashboard,
+  // },
+  // {
+  //   label: "Monitoring",
+  //   icon: BarChart3,
+  //   children: [
+  //     {
+  //       label: "Assembly",
+  //       icon: Cog,
+  //       children: [
+  //         {
+  //           // Assembly overview = the existing assembly dashboard
+  //           label: "Overview",
+  //           href: "/dashboard",
+  //           icon: Gauge,
+  //         },
+  //         {
+  //           // Existing TV page (src/app/tv)
+  //           label: "TV",
+  //           href: "/tv",
+  //           icon: Tv,
+  //           newTab: true,
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       label: "Moulding",
+  //       icon: Factory,
+  //       children: [
+  //         {
+  //           label: "Overview",
+  //           href: "/monitoring/moulding",
+  //           icon: Gauge,
+  //         },
+  //         {
+  //           // Moulding TV page (build it at src/app/tv/moulding)
+  //           label: "TV",
+  //           href: "/tv2",
+  //           icon: Tv,
+  //           newTab: true,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
   {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    label: "Monitoring",
-    icon: BarChart3,
+    label: "Employees",
+    icon: Users,
     children: [
       {
-        label: "Assembly",
-        icon: Cog,
-        children: [
-          {
-            // Assembly overview = the existing assembly dashboard
-            label: "Overview",
-            href: "/dashboard",
-            icon: Gauge,
-          },
-          {
-            // Existing TV page (src/app/tv)
-            label: "TV",
-            href: "/tv",
-            icon: Tv,
-            newTab: true,
-          },
-        ],
+        label: "All Employees",
+        href: "/employees",
+        icon: Users,
       },
       {
-        label: "Moulding",
-        icon: Factory,
-        children: [
-          {
-            label: "Overview",
-            href: "/monitoring/moulding",
-            icon: Gauge,
-          },
-          {
-            // Moulding TV page (build it at src/app/tv/moulding)
-            label: "TV",
-            href: "/tv2",
-            icon: Tv,
-            newTab: true,
-          },
-        ],
+        label: "Create Employee",
+        href: "/employees/create",
+        icon: UserPlus,
       },
-     
     ],
   },
-{
-  label: "Employees",
-  icon: Users,
-  children: [
-    {
-      label: "All Employees",
-      href: "/employees",
-      icon: Users,
+  // {
+  //   label: "Reports",
+  //   href: "/reports",
+  //   icon: FileText,
+  // },
+  // {
+  //   label: "Activities",
+  //   href: "/activities",
+  //   icon: ClipboardList,
+  // },
+  { label: "Tenants",
+     href: "/tenants",
+      icon: Building2 
     },
-    {
-      label: "Create Employee",
-      href: "/employees/create",
-      icon: UserPlus,
+  { label: "Roles",
+     href: "/roles", 
+     icon: UserCog 
     },
-  ],
-},
-  {
-    label: "Reports",
-    href: "/reports",
-    icon: FileText,
-  },
-  {
-    label: "Activities",
-    href: "/activities",
-    icon: ClipboardList,
-  },
-   { label: "Tenants", href: "/tenants", icon: Building2 },
 ];
 
 const secondaryNavigation = [
@@ -130,7 +137,7 @@ const secondaryNavigation = [
 // Is this route (or anything under it) the current page?
 function isPathActive(pathname, href) {
   if (href === "/dashboard") {
-    return pathname === "/dashboard";
+    return pathname === "/dashboard" || pathname === "/";
   }
 
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -192,7 +199,7 @@ export default function AppSidebar() {
   // Keys of the groups that are expanded, e.g. "Monitoring",
   // "Monitoring/Assembly". Starts with the groups that hold the current page.
   const [openKeys, setOpenKeys] = useState(() =>
-    getActiveGroupKeys(navigation, pathname)
+    getActiveGroupKeys(navigation, pathname),
   );
 
   /*
@@ -223,7 +230,7 @@ export default function AppSidebar() {
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--sidebar-width",
-      collapsed ? "82px" : "248px"
+      collapsed ? "82px" : "248px",
     );
 
     return () => {
@@ -257,7 +264,7 @@ export default function AppSidebar() {
     setOpenKeys((current) =>
       current.includes(key)
         ? current.filter((openKey) => openKey !== key)
-        : [...current, key]
+        : [...current, key],
     );
   };
 
@@ -463,9 +470,7 @@ export default function AppSidebar() {
         className={`fixed inset-y-0 left-0 z-50 flex h-screen flex-col overflow-hidden border-r border-white/10 bg-gradient-to-b from-[#06194a] via-[#123b9e] to-[#087fca] text-white shadow-[10px_0_40px_rgba(0,0,0,0.18)] transition-all duration-300 ease-in-out ${
           collapsed ? "lg:w-[82px]" : "lg:w-[248px]"
         } ${
-          mobileOpen
-            ? "w-[280px] translate-x-0"
-            : "w-[280px] -translate-x-full"
+          mobileOpen ? "w-[280px] translate-x-0" : "w-[280px] -translate-x-full"
         } lg:translate-x-0`}
       >
         {/* Background decoration */}
@@ -496,9 +501,7 @@ export default function AppSidebar() {
             {/* Brand */}
             <div
               className={`min-w-0 overflow-hidden transition-all duration-300 ${
-                collapsed
-                  ? "lg:w-0 lg:opacity-0"
-                  : "w-auto opacity-100"
+                collapsed ? "lg:w-0 lg:opacity-0" : "w-auto opacity-100"
               }`}
             >
               <p className="whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.22em] text-blue-100">
@@ -579,9 +582,7 @@ export default function AppSidebar() {
 
               <div
                 className={`min-w-0 overflow-hidden transition-all duration-300 ${
-                  collapsed
-                    ? "lg:w-0 lg:opacity-0"
-                    : "w-auto opacity-100"
+                  collapsed ? "lg:w-0 lg:opacity-0" : "w-auto opacity-100"
                 }`}
               >
                 <p className="truncate text-[12px] font-semibold text-white">
@@ -600,18 +601,14 @@ export default function AppSidebar() {
               disabled={isLogoutLoading}
               title={collapsed ? "Logout" : undefined}
               className={`mt-2 flex h-10 w-full items-center rounded-xl text-red-100 transition hover:bg-red-500/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-60 ${
-                collapsed
-                  ? "lg:justify-center"
-                  : "gap-3 px-3"
+                collapsed ? "lg:justify-center" : "gap-3 px-3"
               }`}
             >
               <LogOut className="h-[18px] w-[18px] shrink-0" />
 
               <span
                 className={`whitespace-nowrap text-[13px] font-medium transition-all duration-300 ${
-                  collapsed
-                    ? "lg:w-0 lg:opacity-0"
-                    : "w-auto opacity-100"
+                  collapsed ? "lg:w-0 lg:opacity-0" : "w-auto opacity-100"
                 }`}
               >
                 {isLogoutLoading ? "Logging out..." : "Logout"}
