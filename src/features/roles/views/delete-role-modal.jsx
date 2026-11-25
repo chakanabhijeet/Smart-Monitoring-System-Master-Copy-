@@ -13,24 +13,24 @@ import Modal from "@/components/common/modal";
 function Details({ target, tone }) {
   const box =
     tone === "emerald"
-      ? "border-emerald-200 bg-emerald-50"
+      ? "border-emerald-200 dark:border-emerald-900/30 bg-emerald-50 dark:bg-emerald-900/20"
       : tone === "amber"
-        ? "border-amber-200 bg-amber-50"
-        : "border-slate-200 bg-slate-50";
+        ? "border-amber-200 dark:border-amber-900/30 bg-amber-50 dark:bg-amber-900/20"
+        : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800";
 
   return (
     <div className={`rounded-xl border p-4 ${box}`}>
       {target.name && (
-        <p className="text-sm font-bold text-slate-900">{target.name}</p>
+        <p className="text-sm font-bold text-slate-900 dark:text-white">{target.name}</p>
       )}
-      <p className="mt-1 text-xs text-slate-600">
+      <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
         Role ID:{" "}
-        <span className="rounded bg-white px-1.5 py-0.5 font-mono font-semibold text-slate-800">
+        <span className="rounded bg-white dark:bg-slate-900 px-1.5 py-0.5 font-mono font-semibold text-slate-800 dark:text-white">
           {target.id}
         </span>
       </p>
       {target.tenantName && (
-        <p className="mt-1 text-xs text-slate-600">
+        <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
           Tenant: <span className="font-semibold">{target.tenantName}</span>
         </p>
       )}
@@ -63,14 +63,14 @@ export default function DeleteRoleModal({
 
         <p
           className={`mt-4 text-sm font-medium ${
-            notFound ? "text-amber-800" : "text-emerald-800"
+            notFound ? "text-amber-800 dark:text-amber-200" : "text-emerald-800 dark:text-emerald-200"
           }`}
         >
           {outcome.message}
         </p>
 
         {notFound && (
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
             It may already have been deleted. It has been removed from your
             list.
           </p>

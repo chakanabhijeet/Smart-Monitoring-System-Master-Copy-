@@ -11,14 +11,14 @@ export default function AddRoleCard({
   error,
 }) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+    <section className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-sm sm:p-6">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
           <Plus className="h-5 w-5" />
         </div>
         <div className="min-w-0">
-          <h2 className="text-base font-bold text-slate-900">Add role</h2>
-          <p className="truncate text-xs text-slate-500">
+          <h2 className="text-base font-bold text-slate-900 dark:text-white">Add role</h2>
+          <p className="truncate text-xs text-slate-500 dark:text-slate-400">
             For <span className="font-semibold">{tenant.name}</span>
           </p>
         </div>
@@ -26,10 +26,10 @@ export default function AddRoleCard({
 
       {error && (
         <div
-          className="mt-4 flex items-start gap-2 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700"
+          className="mt-4 flex items-start gap-2 rounded-xl border border-rose-200 dark:border-rose-900/30 bg-rose-50 dark:bg-rose-900/20 p-3 text-sm text-rose-700 dark:text-rose-200"
           role="alert"
         >
-          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-600 dark:text-rose-400" />
           <span>{error}</span>
         </div>
       )}
@@ -37,7 +37,7 @@ export default function AddRoleCard({
       <form onSubmit={onSubmit} noValidate className="mt-5">
         <label
           htmlFor="roleName"
-          className="mb-1.5 block text-sm font-semibold text-slate-800"
+          className="mb-1.5 block text-sm font-semibold text-slate-800 dark:text-slate-200"
         >
           Role name
         </label>
@@ -52,7 +52,7 @@ export default function AddRoleCard({
           render={({ field, fieldState }) => (
             <>
               <div className="relative">
-                <UserCog className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400" />
+                <UserCog className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-slate-400 dark:text-slate-400" />
                 <input
                   id="roleName"
                   name={field.name}
@@ -66,10 +66,10 @@ export default function AddRoleCard({
                   aria-describedby={
                     fieldState.error ? "roleName-error" : undefined
                   }
-                  className={`h-12 w-full rounded-xl border bg-slate-50 pl-11 pr-4 text-[15px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-4 ${
+                  className={`h-12 w-full rounded-xl border bg-slate-50 dark:bg-slate-800 pl-11 pr-4 text-[15px] text-slate-900 dark:text-white outline-none transition placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-4 ${
                     fieldState.error
                       ? "border-rose-300 focus:border-rose-400 focus:ring-rose-100"
-                      : "border-slate-200 focus:border-[#3b4fe0] focus:ring-[#3b4fe0]/15"
+                      : "border-slate-200 dark:border-slate-700 focus:border-[#3b4fe0] focus:ring-[#3b4fe0]/15"
                   }`}
                 />
               </div>
@@ -77,7 +77,7 @@ export default function AddRoleCard({
               {fieldState.error && (
                 <p
                   id="roleName-error"
-                  className="mt-1.5 text-xs font-medium text-rose-600"
+                  className="mt-1.5 text-xs font-medium text-rose-600 dark:text-rose-400"
                   role="alert"
                 >
                   {fieldState.error.message}

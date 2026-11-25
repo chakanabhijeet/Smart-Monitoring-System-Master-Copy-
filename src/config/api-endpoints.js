@@ -1,3 +1,4 @@
+import { BASE_URL1 } from "./constants";
 export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: "/users/loginuser",
@@ -26,28 +27,21 @@ export const API_ENDPOINTS = {
   },
 
   PRODUCTION: {
-    // Assembly machines, live (today)
     ASSEMBLY_SHIFT: "/proddata/assemblyshift",
-
-    // Assembly machines, past dates (same server as ASSEMBLY_SHIFT)
     PROD_DATA: "/proddata/yesterday",
 
-    // Injection moulding (2700 ton machine). This API runs on a DIFFERENT
-    // server, so the full address is used (axios ignores the base URL when
-    // the address is complete).
-    IMM_SHIFTWISE: "/proddata/immshiftwise",
-
-    // Injection moulding shot log (last shots, min / max / avg cycle time).
-    // Also a different server, so the full address is used.
-    IMM_LOG: "http://192.168.7.144:8000/proddata/immlog",//last shots api 
+    IMM_SHIFTWISE: `${BASE_URL1}/proddata/immshiftwise`,
+    IMM_LOG: `${BASE_URL1}/proddata/immlog`,
   },
+
   TENANTS: {
-  CREATE: "http://192.168.7.144:8000/tenant/createtenant",
-  LIST: "http://192.168.7.144:8000/tenant/list",
-  VERIFY: "http://192.168.7.144:8000/tenant/verifytenant",
-},
-USER_ROLES: {
-  CREATE: "http://192.168.7.144:8000/user-role/createrolesuper",
-  DELETE: "http://192.168.7.144:8000/user-role/delete",
-},
+    CREATE: `${BASE_URL1}/tenant/createtenant`,
+    LIST: `${BASE_URL1}/tenant/list`,
+    VERIFY: `${BASE_URL1}/tenant/verifytenant`,
+  },
+
+  USER_ROLES: {
+    CREATE: `${BASE_URL1}/user-role/createrolesuper`,
+    DELETE: `${BASE_URL1}/user-role/delete`,
+  },
 };
