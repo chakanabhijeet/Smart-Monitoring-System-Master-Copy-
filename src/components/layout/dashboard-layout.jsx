@@ -5,10 +5,10 @@ import { AuthGuard } from "@/components/common/auth-guard";
 export default function DashboardLayout({ children }) {
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-[#f4f8fd]">
+      <div className="min-h-screen bg-[#f4f8fd] dark:bg-slate-950">
         <AppSidebar />
 
-        <main className="min-h-screen min-w-0 transition-all duration-300 lg:ml-[var(--sidebar-width,248px)]">
+        <main className="min-h-screen min-w-0 transition-all duration-300 lg:ml-[var(--sidebar-width,248px)] dark:bg-slate-950">
           {children}
         </main>
       </div>

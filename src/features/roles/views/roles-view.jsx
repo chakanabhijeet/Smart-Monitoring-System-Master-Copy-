@@ -23,7 +23,7 @@ import RolesListCard from "./roles-list-card";
 function TenantStatus({ tenant }) {
   if (tenant.isVerified) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700 ring-1 ring-emerald-100">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2.5 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-100 dark:ring-emerald-900/30">
         <BadgeCheck className="h-3.5 w-3.5" />
         Verified
       </span>
@@ -31,7 +31,7 @@ function TenantStatus({ tenant }) {
   }
 
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700 ring-1 ring-amber-200">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 dark:bg-amber-900/30 px-2.5 py-1 text-xs font-bold text-amber-700 dark:text-amber-400 ring-1 ring-amber-200 dark:ring-amber-900/30">
       <ShieldAlert className="h-3.5 w-3.5" />
       Not verified
     </span>
@@ -72,16 +72,16 @@ export default function RolesView() {
   } = useRolesViewModel();
 
   return (
-    <main className="min-h-screen min-w-0 bg-slate-50 p-4 sm:p-6">
+    <main className="min-h-screen min-w-0 bg-slate-50 dark:bg-slate-950 p-4 sm:p-6">
       <div className="mx-auto w-full max-w-[1400px] min-w-0">
         {/* Header */}
-        <header className="mb-6 flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <header className="mb-6 flex items-center gap-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-sm">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-600">
             <UserCog className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Roles</h1>
-            <p className="text-sm text-slate-500">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Roles</h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Create and delete roles for a tenant
             </p>
           </div>
@@ -94,8 +94,8 @@ export default function RolesView() {
             aria-live="polite"
             className={`mb-5 flex items-start gap-3 rounded-2xl border p-4 text-sm ${
               notice.type === "success"
-                ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                : "border-rose-200 bg-rose-50 text-rose-800"
+                ? "border-emerald-200 dark:border-emerald-900/30 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200"
+                : "border-rose-200 dark:border-rose-900/30 bg-rose-50 dark:bg-rose-900/20 text-rose-800 dark:text-rose-200"
             }`}
           >
             {notice.type === "success" ? (
@@ -116,18 +116,18 @@ export default function RolesView() {
         )}
 
         {/* Tenant picker */}
-        <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <section className="mb-6 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-sm sm:p-6">
           <label
             htmlFor="tenantId"
-            className="mb-1.5 block text-sm font-semibold text-slate-800"
+            className="mb-1.5 block text-sm font-semibold text-slate-800 dark:text-slate-200"
           >
             Tenant
           </label>
 
           {isLoadingTenants ? (
-            <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 sm:max-w-md" />
+            <div className="h-12 w-full animate-pulse rounded-xl bg-slate-200 dark:bg-slate-700 sm:max-w-md" />
           ) : isTenantsError ? (
-            <div className="flex flex-col gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3 rounded-xl border border-amber-200 dark:border-amber-900/30 bg-amber-50 dark:bg-amber-900/20 p-4 text-sm text-amber-800 dark:text-amber-200 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-start gap-2">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
                 <div>
@@ -138,14 +138,14 @@ export default function RolesView() {
               <button
                 type="button"
                 onClick={retryTenants}
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-amber-300 bg-white px-3 py-1.5 font-semibold text-amber-800 hover:bg-amber-100"
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-amber-300 dark:border-amber-900/30 bg-white dark:bg-slate-900 px-3 py-1.5 font-semibold text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/20"
               >
                 <RefreshCw className="h-4 w-4" />
                 Try again
               </button>
             </div>
           ) : tenants.length === 0 ? (
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               There are no tenants yet.{" "}
               <Link
                 href="/tenants"
@@ -163,7 +163,7 @@ export default function RolesView() {
                   id="tenantId"
                   value={tenantId}
                   onChange={(event) => selectTenant(event.target.value)}
-                  className="h-12 w-full appearance-none rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-10 text-[15px] text-slate-900 outline-none transition focus:border-[#3b4fe0] focus:bg-white focus:ring-4 focus:ring-[#3b4fe0]/15"
+                  className="h-12 w-full appearance-none rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 pl-11 pr-10 text-[15px] text-slate-900 dark:text-white outline-none transition focus:border-[#3b4fe0] focus:bg-white dark:focus:bg-slate-800 focus:ring-4 focus:ring-[#3b4fe0]/15"
                 >
                   <option value="" disabled>
                     Select a tenant
@@ -174,7 +174,7 @@ export default function RolesView() {
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-400" />
               </div>
 
               {tenant && <TenantStatus tenant={tenant} />}
@@ -182,7 +182,7 @@ export default function RolesView() {
           )}
 
           {tenant && !tenant.isVerified && (
-            <p className="mt-3 text-xs text-amber-700">
+            <p className="mt-3 text-xs text-amber-700 dark:text-amber-200">
               This tenant is not verified yet. You can verify it from the{" "}
               <Link href="/tenants" className="font-semibold underline">
                 Tenants page
@@ -220,14 +220,14 @@ export default function RolesView() {
           !isLoadingTenants &&
           !isTenantsError &&
           tenants.length > 0 && (
-            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-500">
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-6 py-16 text-center">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-500 dark:text-indigo-400">
                 <MousePointerClick className="h-7 w-7" />
               </div>
-              <p className="mt-4 text-base font-semibold text-slate-800">
+              <p className="mt-4 text-base font-semibold text-slate-800 dark:text-slate-200">
                 Select a tenant to manage its roles
               </p>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 Choose a tenant above to add or delete roles.
               </p>
             </div>

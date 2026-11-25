@@ -1,5 +1,6 @@
 import "./globals.css";
 import QueryProvider from "@/providers/query-provider";
+import ThemeProvider from "@/providers/theme-provider";
 import { Inter } from "next/font/google";
 
 const inter = Inter({
@@ -24,7 +25,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased`}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

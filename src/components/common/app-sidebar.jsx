@@ -129,7 +129,7 @@ const navigation = [
 const secondaryNavigation = [
   {
     label: "Settings",
-    href: "/settings",
+    href: "/dashboard/settings",
     icon: Settings,
   },
 ];

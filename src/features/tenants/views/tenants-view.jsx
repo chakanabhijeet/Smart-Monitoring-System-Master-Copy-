@@ -25,15 +25,15 @@ const FILTERS = [
 
 function StatTile({ icon: Icon, label, value, tone }) {
   return (
-    <div className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="flex items-center gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-sm">
       <div
-        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${tone}`}
+        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${tone} dark:${tone.replace("text-", "dark:text-").replace("bg-", "dark:bg-")}`}
       >
         <Icon className="h-6 w-6" />
       </div>
       <div>
-        <p className="text-xs font-medium text-slate-500">{label}</p>
-        <p className="text-2xl font-bold tabular-nums text-slate-900">
+        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{label}</p>
+        <p className="text-2xl font-bold tabular-nums text-slate-900 dark:text-white">
           {value}
         </p>
       </div>
@@ -45,7 +45,7 @@ function StatTile({ icon: Icon, label, value, tone }) {
 function VerificationBadge({ tenant, onVerify }) {
   if (tenant.isVerified) {
     return (
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700 ring-1 ring-emerald-100">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-2.5 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-100 dark:ring-emerald-900/30">
         <BadgeCheck className="h-3.5 w-3.5" />
         Verified
       </span>
@@ -57,7 +57,7 @@ function VerificationBadge({ tenant, onVerify }) {
       type="button"
       onClick={() => onVerify(tenant)}
       title="Click to verify this tenant"
-      className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700 ring-1 ring-amber-200 transition hover:-translate-y-0.5 hover:bg-amber-100 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+      className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 dark:bg-amber-900/30 px-2.5 py-1 text-xs font-bold text-amber-700 dark:text-amber-400 ring-1 ring-amber-200 dark:ring-amber-900/30 transition hover:-translate-y-0.5 hover:bg-amber-100 dark:hover:bg-amber-900/50 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
     >
       <ShieldAlert className="h-3.5 w-3.5" />
       Not verified
@@ -70,12 +70,12 @@ function ActiveBadge({ active }) {
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold ${
-        active ? "bg-sky-50 text-sky-700" : "bg-slate-100 text-slate-500"
+        active ? "bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
       }`}
     >
       <span
         className={`h-1.5 w-1.5 rounded-full ${
-          active ? "bg-sky-500" : "bg-slate-400"
+          active ? "bg-sky-500" : "bg-slate-400 dark:bg-slate-500"
         }`}
       />
       {active ? "Active" : "Inactive"}
@@ -85,22 +85,22 @@ function ActiveBadge({ active }) {
 
 function SkeletonRows() {
   return Array.from({ length: 5 }).map((_, index) => (
-    <tr key={index} className="border-t border-slate-100">
+    <tr key={index} className="border-t border-slate-100 dark:border-slate-700">
       <td className="px-5 py-4">
-        <div className="h-4 w-48 animate-pulse rounded bg-slate-200" />
-        <div className="mt-2 h-3 w-20 animate-pulse rounded bg-slate-100" />
+        <div className="h-4 w-48 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
+        <div className="mt-2 h-3 w-20 animate-pulse rounded bg-slate-100 dark:bg-slate-800" />
       </td>
       <td className="px-5 py-4">
-        <div className="h-4 w-28 animate-pulse rounded bg-slate-200" />
+        <div className="h-4 w-28 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
       </td>
       <td className="px-5 py-4">
-        <div className="h-6 w-16 animate-pulse rounded-full bg-slate-200" />
+        <div className="h-6 w-16 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
       </td>
       <td className="px-5 py-4">
-        <div className="h-6 w-32 animate-pulse rounded-full bg-slate-200" />
+        <div className="h-6 w-32 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
       </td>
       <td className="px-5 py-4">
-        <div className="h-4 w-24 animate-pulse rounded bg-slate-200" />
+        <div className="h-4 w-24 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
       </td>
     </tr>
   ));
@@ -137,17 +137,17 @@ export default function TenantsView() {
   } = useTenantsViewModel();
 
   return (
-    <main className="min-h-screen min-w-0 bg-slate-50 p-4 sm:p-6">
+    <main className="min-h-screen min-w-0 bg-slate-50 dark:bg-slate-950 p-4 sm:p-6">
       <div className="mx-auto w-full max-w-[1400px] min-w-0">
         {/* Header */}
-        <header className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <header className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-600">
               <Building2 className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Tenants</h1>
-              <p className="text-sm text-slate-500">
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Tenants</h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
                 Create tenants and verify them
               </p>
             </div>
@@ -158,7 +158,7 @@ export default function TenantsView() {
               type="button"
               onClick={refresh}
               disabled={isFetching}
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50"
             >
               <RefreshCw
                 className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`}
@@ -208,12 +208,12 @@ export default function TenantsView() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by name, code or address"
-              className="h-11 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#3b4fe0] focus:ring-4 focus:ring-[#3b4fe0]/15"
+              className="h-11 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 pl-10 pr-4 text-sm text-slate-900 dark:text-white outline-none transition placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-[#3b4fe0] focus:ring-4 focus:ring-[#3b4fe0]/15"
             />
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1">
+            <div className="inline-flex rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-1">
               {FILTERS.map((filter) => (
                 <button
                   key={filter.value}
@@ -222,7 +222,7 @@ export default function TenantsView() {
                   className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition ${
                     statusFilter === filter.value
                       ? "bg-indigo-600 text-white shadow-sm"
-                      : "text-slate-600 hover:bg-slate-50"
+                      : "text-slate-400 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
                   }`}
                 >
                   {filter.label}
@@ -233,9 +233,9 @@ export default function TenantsView() {
             <button
               type="button"
               onClick={toggleSortOrder}
-              className="inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              className="inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3.5 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800"
             >
-              <ArrowUpDown className="h-4 w-4 text-slate-400" />
+              <ArrowUpDown className="h-4 w-4 text-slate-400 dark:text-slate-400" />
               {sortOrder === "asc" ? "Oldest first" : "Newest first"}
             </button>
           </div>
@@ -243,7 +243,7 @@ export default function TenantsView() {
 
         {/* Error */}
         {isError && (
-          <div className="mb-4 flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mb-4 flex flex-col gap-3 rounded-2xl border border-amber-200 dark:border-amber-900/30 bg-amber-50 dark:bg-amber-900/20 p-4 text-sm text-amber-800 dark:text-amber-200 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-2">
               <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
               <div>
@@ -254,7 +254,7 @@ export default function TenantsView() {
             <button
               type="button"
               onClick={refresh}
-              className="inline-flex shrink-0 items-center justify-center rounded-lg border border-amber-300 bg-white px-3 py-1.5 font-semibold text-amber-800 hover:bg-amber-100"
+              className="inline-flex shrink-0 items-center justify-center rounded-lg border border-amber-300 dark:border-amber-900/30 bg-white dark:bg-slate-900 px-3 py-1.5 font-semibold text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/20"
             >
               Try again
             </button>
@@ -262,16 +262,16 @@ export default function TenantsView() {
         )}
 
         {/* Table */}
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[860px] text-left text-sm">
-              <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+              <thead className="bg-slate-50 dark:bg-slate-800 text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
                 <tr>
-                  <th className="px-5 py-3 font-semibold">Tenant</th>
-                  <th className="px-5 py-3 font-semibold">Address</th>
-                  <th className="px-5 py-3 font-semibold">Status</th>
-                  <th className="px-5 py-3 font-semibold">Verification</th>
-                  <th className="px-5 py-3 font-semibold">Created</th>
+                  <th className="px-5 py-3 font-semibold text-slate-900 dark:text-white">Tenant</th>
+                  <th className="px-5 py-3 font-semibold text-slate-900 dark:text-white">Address</th>
+                  <th className="px-5 py-3 font-semibold text-slate-900 dark:text-white">Status</th>
+                  <th className="px-5 py-3 font-semibold text-slate-900 dark:text-white">Verification</th>
+                  <th className="px-5 py-3 font-semibold text-slate-900 dark:text-white">Created</th>
                 </tr>
               </thead>
 
@@ -282,7 +282,7 @@ export default function TenantsView() {
                   <tr>
                     <td
                       colSpan={5}
-                      className="px-5 py-14 text-center text-slate-500"
+                      className="px-5 py-14 text-center text-slate-500 dark:text-slate-400"
                     >
                       {isError
                         ? "No data to show."
@@ -295,21 +295,21 @@ export default function TenantsView() {
                   tenants.map((tenant) => (
                     <tr
                       key={tenant.id ?? tenant.code}
-                      className="border-t border-slate-100 transition hover:bg-slate-50/70"
+                      className="border-t border-slate-100 dark:border-slate-700 transition hover:bg-slate-50/70 dark:hover:bg-slate-800/50"
                     >
                       <td className="px-5 py-4">
-                        <p className="font-semibold text-slate-900">
+                        <p className="font-semibold text-slate-900 dark:text-white">
                           {tenant.name}
                         </p>
-                        <span className="mt-1 inline-block rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs font-semibold text-slate-600">
+                        <span className="mt-1 inline-block rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 font-mono text-xs font-semibold text-slate-600 dark:text-slate-400">
                           {tenant.code}
                         </span>
                       </td>
 
-                      <td className="px-5 py-4 text-slate-600">
+                      <td className="px-5 py-4 text-slate-600 dark:text-slate-400">
                         {tenant.address ? (
                           <span className="inline-flex items-center gap-1.5">
-                            <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                            <MapPin className="h-3.5 w-3.5 text-slate-400 dark:text-slate-400" />
                             {tenant.address}
                           </span>
                         ) : (
@@ -328,7 +328,7 @@ export default function TenantsView() {
                         />
                       </td>
 
-                      <td className="px-5 py-4 text-slate-600">
+                      <td className="px-5 py-4 text-slate-600 dark:text-slate-400">
                         {formatTenantDate(tenant.createdAt)}
                       </td>
                     </tr>

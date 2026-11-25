@@ -1,6 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+import { ROUTES } from "@/constants/routes";
 import {
   Bell,
   ChevronDown,
@@ -10,20 +13,21 @@ import {
 } from "lucide-react";
 
 export default function DashboardHeader() {
+  const router = useRouter();
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
     <header className="mb-8 flex items-start justify-between gap-4">
       <div className="min-w-0">
-        <p className="text-sm font-semibold text-blue-600">
+        <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">
           Smart Monitoring System
         </p>
 
-        <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+        <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
           Dashboard
         </h1>
 
-        <p className="mt-2 text-sm text-slate-500 sm:text-base">
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 sm:text-base">
           Welcome back. Here's what's happening today.
         </p>
       </div>
@@ -34,9 +38,9 @@ export default function DashboardHeader() {
           type="button"
           className="
             relative flex h-10 w-10 items-center justify-center
-            rounded-xl border border-slate-200
-            bg-white text-slate-600 shadow-sm
-            transition hover:bg-slate-50 hover:text-slate-900
+            rounded-xl border border-slate-200 dark:border-slate-700
+            bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 shadow-sm
+            transition hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white
           "
           aria-label="Notifications"
         >
@@ -85,6 +89,10 @@ export default function DashboardHeader() {
 
             <button
               type="button"
+              onClick={() => {
+                setProfileOpen(false);
+                router.push(ROUTES.SETTINGS);
+              }}
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-slate-700 hover:bg-slate-50"
             >
               <Settings className="h-4 w-4" />

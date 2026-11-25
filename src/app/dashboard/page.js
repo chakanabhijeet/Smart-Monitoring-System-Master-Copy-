@@ -566,7 +566,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <main className="min-h-screen min-w-0 overflow-x-hidden bg-slate-50 p-3 sm:p-6">
+      <main className="min-h-screen min-w-0 overflow-x-hidden bg-slate-50 dark:bg-slate-950 p-3 sm:p-6">
         <div className="mx-auto w-full max-w-[1800px] min-w-0">
           <header className="mb-5 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:mb-6 sm:flex-row sm:items-center sm:justify-between sm:p-5">
             <div className="flex min-w-0 items-center gap-3">
