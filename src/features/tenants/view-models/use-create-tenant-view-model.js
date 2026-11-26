@@ -1,6 +1,6 @@
+
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,7 +11,8 @@ import {
   buildCreateTenantPayload,
   normalizeTenant,
 } from "../models/tenant.model";
-import { TENANTS_QUERY_KEY } from "./use-tenants-view-model";
+import { tenantKeys } from "../queries/tenant.queries";
+import { useTenantsStore } from "../store/tenants.store";
 import { getApiErrorMessage } from "@/lib/api-error";
 
 const EMPTY_FORM = {
@@ -23,9 +24,14 @@ const EMPTY_FORM = {
 export function useCreateTenantViewModel() {
   const queryClient = useQueryClient();
 
-  const [serverError, setServerError] = useState("");
-  const [createdTenant, setCreatedTenant] = useState(null);
+  // Popup state lives in the Zustand store
+  const serverError = useTenantsStore((state) => state.createError);
+  const createdTenant = useTenantsStore((state) => state.createdTenant);
+  const setCreateError = useTenantsStore((state) => state.setCreateError);
+  const setCreatedTenant = useTenantsStore((state) => state.setCreatedTenant);
+  const addAnother = useTenantsStore((state) => state.addAnother);
 
+  // The form fields stay with react-hook-form
   const form = useForm({
     resolver: zodResolver(tenantSchema),
     defaultValues: EMPTY_FORM,
@@ -42,7 +48,7 @@ export function useCreateTenantViewModel() {
       form.reset(EMPTY_FORM);
 
       // Makes the list reload so the new tenant appears
-      queryClient.invalidateQueries({ queryKey: TENANTS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: tenantKeys.all });
     },
 
     onError: (error) => {
@@ -57,12 +63,12 @@ export function useCreateTenantViewModel() {
         return;
       }
 
-      setServerError(message);
+      setCreateError(message);
     },
   });
 
   const onSubmit = form.handleSubmit((values) => {
-    setServerError("");
+    setCreateError("");
     createMutation.mutate(values);
   });
 
@@ -72,9 +78,6 @@ export function useCreateTenantViewModel() {
     isSaving: createMutation.isPending,
     serverError,
     createdTenant,
-    addAnother: () => {
-      setCreatedTenant(null);
-      setServerError("");
-    },
+    addAnother,
   };
 }

@@ -1,52 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { tenantService } from "../services/tenant.service";
+import { normalizeVerifyResponse } from "../models/tenant.model";
 import {
-  normalizeTenantListResponse,
-  normalizeVerifyResponse,
-} from "../models/tenant.model";
+  TENANTS_QUERY_KEY,
+  markTenantVerified,
+  tenantListQuery,
+} from "../queries/tenant.queries";
+import { useTenantsStore } from "../store/tenants.store";
 import { getApiErrorMessage } from "@/lib/api-error";
 
-export const TENANTS_QUERY_KEY = ["tenants"];
-
-// Marks one tenant as verified inside the saved list, so the badge
-// turns green immediately without waiting for the server
-function markTenantVerified(raw, tenantCode) {
-  if (!raw || !Array.isArray(raw.data)) return raw;
-
-  return {
-    ...raw,
-    data: raw.data.map((item) =>
-      item?.tenant_code === tenantCode ? { ...item, is_verified: true } : item
-    ),
-  };
-}
+// Other screens may still import the key from this file, so keep it here too.
+export { TENANTS_QUERY_KEY };
 
 export function useTenantsViewModel() {
   const queryClient = useQueryClient();
 
+  /* ------------------------ screen state (Zustand) ------------------------ */
+
   // Toolbar
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all"); // all | verified | pending
+  const sortOrder = useTenantsStore((state) => state.sortOrder);
+  const search = useTenantsStore((state) => state.search);
+  const statusFilter = useTenantsStore((state) => state.statusFilter);
+  const setSearch = useTenantsStore((state) => state.setSearch);
+  const setStatusFilter = useTenantsStore((state) => state.setStatusFilter);
+  const toggleSortOrder = useTenantsStore((state) => state.toggleSortOrder);
 
-  // Popups
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [verifyTarget, setVerifyTarget] = useState(null);
-  const [verifyResult, setVerifyResult] = useState(null);
-  const [verifyError, setVerifyError] = useState("");
+  // "Add tenant" popup
+  const isCreateOpen = useTenantsStore((state) => state.isCreateOpen);
+  const openCreate = useTenantsStore((state) => state.openCreate);
+  const closeCreate = useTenantsStore((state) => state.closeCreate);
 
-  /* ------------------------------ list ------------------------------ */
+  // "Verify tenant" popup
+  const verifyTarget = useTenantsStore((state) => state.verifyTarget);
+  const verifyResult = useTenantsStore((state) => state.verifyResult);
+  const verifyError = useTenantsStore((state) => state.verifyError);
+  const setVerifyResult = useTenantsStore((state) => state.setVerifyResult);
+  const setVerifyError = useTenantsStore((state) => state.setVerifyError);
+  const openVerify = useTenantsStore((state) => state.openVerify);
+  const closeVerify = useTenantsStore((state) => state.closeVerify);
 
-  const tenantsQuery = useQuery({
-    queryKey: [...TENANTS_QUERY_KEY, sortOrder],
-    queryFn: () => tenantService.getTenants(sortOrder),
-    select: (raw) => normalizeTenantListResponse(raw).tenants,
-    staleTime: 30 * 1000,
-  });
+  // Leaving the page closes any popup that is still open
+  const resetPopups = useTenantsStore((state) => state.resetPopups);
+
+  useEffect(() => () => resetPopups(), [resetPopups]);
+
+  /* ------------------------------ list (TanStack Query) ------------------------------ */
+
+  const tenantsQuery = useQuery(tenantListQuery(sortOrder));
 
   const tenants = tenantsQuery.data ?? [];
 
@@ -72,7 +76,7 @@ export function useTenantsViewModel() {
     pending: tenants.filter((tenant) => !tenant.isVerified).length,
   };
 
-  /* ------------------------------ verify ------------------------------ */
+  /* ------------------------------ verify (TanStack Query) ------------------------------ */
 
   const verifyMutation = useMutation({
     mutationFn: (tenantCode) => tenantService.verifyTenant(tenantCode),
@@ -95,18 +99,6 @@ export function useTenantsViewModel() {
     },
   });
 
-  const openVerify = (tenant) => {
-    setVerifyTarget(tenant);
-    setVerifyResult(null);
-    setVerifyError("");
-  };
-
-  const closeVerify = () => {
-    setVerifyTarget(null);
-    setVerifyResult(null);
-    setVerifyError("");
-  };
-
   const confirmVerify = () => {
     if (!verifyTarget) return;
 
@@ -128,8 +120,7 @@ export function useTenantsViewModel() {
 
     // toolbar
     sortOrder,
-    toggleSortOrder: () =>
-      setSortOrder((value) => (value === "asc" ? "desc" : "asc")),
+    toggleSortOrder,
     search,
     setSearch,
     statusFilter,
@@ -137,8 +128,8 @@ export function useTenantsViewModel() {
 
     // create popup
     isCreateOpen,
-    openCreate: () => setIsCreateOpen(true),
-    closeCreate: () => setIsCreateOpen(false),
+    openCreate,
+    closeCreate,
 
     // verify popup
     verifyTarget,
