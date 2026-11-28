@@ -1,4 +1,4 @@
-<div align="center"><img src="smart/public/logo.png" alt="ABHIJEET" width="120" />
+<div align="center"><img src="public/logo.png" alt="ABHIJEET" width="120" />
 
 # 🏭 ABHIJEET Smart Monitoring System
 
